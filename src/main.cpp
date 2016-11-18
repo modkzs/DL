@@ -1,27 +1,29 @@
 #include <iostream>
 #include "../eigen/Eigen/Dense"
 #include "Layer/BasicLayer.h"
+#include "Util/network.h"
 
 int main() {
+    std::vector<Layer*> layer;
     LossLayer l;
-    Eigen::MatrixXd x(3, 1);
-    Eigen::MatrixXd y(3, 1);
-
-    x << 1, 2, 3;
-    y << 1.5, 2.3, 2.9;
-
-    Eigen::MatrixXd input[] = {x, y};
-
-    std::cout << l.compute(input)[0] << std::endl;
-    Eigen::MatrixXd g = l.grad(input, nullptr)[0];
-    std::cout << g << std::endl;
-
     BasicLayer b(1, 1, 3, 5);
-    Eigen::MatrixXd x1(5, 1);
-    x1 << 1, 2, 3, 4, 5;
-    Eigen::MatrixXd output = b.compute(&x1)[0];
-    std::cout << output << std::endl;
-    std::vector<Eigen::MatrixXd> tmp = b.grad(&x1, &g);
-    std::cout << tmp[0] << std::endl;
-    std::cout << tmp[1] << std::endl;
+    b.setActive("sigmod");
+
+    Eigen::MatrixXd x(5, 1);
+    x << 1,3,5,2,3;
+
+    Eigen::MatrixXd y(3, 1);
+    y << 0,1,0;
+
+//    x.resize(3,1);
+//    l.compute(std::vector<Eigen::MatrixXd>{x, y});
+
+    layer.push_back(&b);
+    layer.push_back(&l);
+
+    Model m(layer, 0.5);
+    for(int i = 0; i < 10; i++) {
+        std::cout<< i << " " << m.run(x, y).transpose() << std::endl;
+        m.train(x, y);
+    }
 }

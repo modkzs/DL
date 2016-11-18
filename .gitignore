@@ -1,2 +1,5 @@
 .idea/
 eigen/
+build/*
+build/*/
+!build/.gitexist

@@ -9,8 +9,14 @@
 #include <vector>
 
 class Layer{
-    virtual std::vector<Eigen::MatrixXd> compute(Eigen::MatrixXd input[]) = 0;
-    virtual std::vector<Eigen::MatrixXd> grad(Eigen::MatrixXd input[], Eigen::MatrixXd* gradient) = 0;
+public:
+    virtual std::vector<Eigen::MatrixXd> compute(std::vector<Eigen::MatrixXd> input) = 0;
+    virtual Eigen::MatrixXd grad(Eigen::MatrixXd* gradient, double lr) = 0;
+    virtual void update(std::vector<Eigen::MatrixXd> gradient, double lr) = 0;
+
+protected:
+    //TODO: to get gradient, must keep input in memory. Avoic it.
+    std::vector<Eigen::MatrixXd> inputs;
 };
 
 /**
@@ -20,12 +26,18 @@ class Layer{
 class BasicLayer : public Layer{
 public:
     BasicLayer(double mean, double variance, int row, int column);
-    std::vector<Eigen::MatrixXd> compute(Eigen::MatrixXd input[]);
-    std::vector<Eigen::MatrixXd> grad(Eigen::MatrixXd input[], Eigen::MatrixXd* gradient);
+    std::vector<Eigen::MatrixXd> compute(std::vector<Eigen::MatrixXd> input);
+    Eigen::MatrixXd grad(Eigen::MatrixXd* gradient, double lr);
+    void update(std::vector<Eigen::MatrixXd> gradient, double lr);
+
+    void setActive(const std::string &active);
+
 private:
     Eigen::MatrixXd weight;
     Eigen::MatrixXd bias;
     Eigen::MatrixXd output;
+
+    std::string active = "line";
 };
 
 /**
@@ -33,8 +45,9 @@ private:
  */
 class LossLayer : public Layer {
 public:
-    std::vector<Eigen::MatrixXd> compute(Eigen::MatrixXd input[]);
-    std::vector<Eigen::MatrixXd> grad(Eigen::MatrixXd input[], Eigen::MatrixXd* gradient);
+    std::vector<Eigen::MatrixXd> compute(std::vector<Eigen::MatrixXd> input);
+    Eigen::MatrixXd grad(Eigen::MatrixXd* gradient, double lr);
+    void update(std::vector<Eigen::MatrixXd> gradient, double lr){}
 };
 
 

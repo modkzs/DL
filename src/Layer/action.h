@@ -40,22 +40,14 @@ double sigmod_grad(double x){
 }
 REGISTER_ACTIVE_GRAD_FUNC("sigmod", sigmod_grad);
 
-//class ActiveFunction{
-//public:
-//    virtual double active(double x) = 0;
-//    virtual double gradient(double x) = 0;
-//};
-//
-//class Sigmoid : public ActiveFunction{
-//public:
-//    static double active(double x){
-//        return 1/(1 + std::exp(-x));
-//    }
-//
-//    static double gradient(double x){
-//        double output = 1/(1 + std::exp(-x));
-//        return output*(1-output);
-//    }
-//};
+double line(double x){
+    return x;
+}
+REGISTER_ACTIVE_FUNC("line", line);
+
+double  line_grad(double x){
+    return 1;
+}
+REGISTER_ACTIVE_GRAD_FUNC("line", line_grad);
 
 #endif //DL_ACTION_H
