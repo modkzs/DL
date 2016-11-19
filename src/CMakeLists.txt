@@ -1,7 +1,7 @@
 add_subdirectory(Layer)
-add_subdirectory(Util)
+add_subdirectory(DAG)
 
 ADD_EXECUTABLE(DL main.cpp)
 
 target_link_libraries(DL LAYER)
-target_link_libraries(DL UTIL)
+target_link_libraries(DL DAG)
