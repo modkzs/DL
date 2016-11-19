@@ -22,9 +22,15 @@ public:
         input_source.insert(input_source.end(), source.begin(), source.end());
     }
 
+    void doGrad(){
+        train = false;
+    }
+
 protected:
     std::vector<Eigen::MatrixXd> inputs;
     std::vector<int> input_source;
+
+    bool train = true;
 };
 
 /**

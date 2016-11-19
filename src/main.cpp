@@ -19,5 +19,6 @@ int main() {
     Schedular s;
     int b_id = s.addLayer(&b);
     int l_id = s.addLayer(std::vector<int>({b_id}), &l);
-    s.compute(std::vector<Eigen::MatrixXd>({x}), std::vector<Eigen::MatrixXd>({y}), l_id);
+//    s.compute(std::vector<Eigen::MatrixXd>({x}), std::vector<Eigen::MatrixXd>({y}), l_id);
+    s.train(std::vector<Eigen::MatrixXd>({x}), std::vector<Eigen::MatrixXd>({y}));
 }

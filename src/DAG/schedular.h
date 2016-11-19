@@ -7,13 +7,17 @@
 
 #include <vector>
 #include <map>
+#include <utility>
 #include "../Layer/BasicLayer.h"
 
 class Schedular{
 private:
     std::vector<Layer*> layers;
-    std::vector<int> pending;
-    std::map<int, std::vector<int>> edges;
+    std::map<int, std::vector<int>> in_edges;
+    std::map<int, std::vector<int>> out_edges;
+    double lr;
+
+    std::vector<std::pair<int, int>> scheduleExecute();
 
 public:
     int addLayer(std::vector<int> input, Layer* layer);
