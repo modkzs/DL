@@ -107,15 +107,15 @@ void Schedular::train(std::vector<Eigen::MatrixXd> input, std::vector<Eigen::Mat
 
     std::vector<std::pair<int, int>> order = scheduleExecute();
 
-    std::vector<Eigen::MatrixXd> grads(layers.size());
+    std::vector<std::vector<Eigen::MatrixXd>> grads(layers.size());
 
     for(int i = 0; i < order.size(); i++){
         std::pair<int, int> execute = order[i];
         int layer = execute.second;
         if (execute.first == -1){
-            grads[layer] = layers[layer]->grad(nullptr, lr);
+            grads[layer] = layers[layer]->grad(std::vector<Eigen::MatrixXd>(), lr);
         } else {
-            grads[layer] = layers[layer]->grad(&grads[execute.first], lr);
+            grads[layer] = layers[layer]->grad(grads[execute.first], lr);
         }
     }
 }

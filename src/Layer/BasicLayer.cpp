@@ -23,21 +23,24 @@ BasicLayer::BasicLayer(double mean, double variance, int row, int column) {
     }
 }
 
-Eigen::MatrixXd BasicLayer::grad(Eigen::MatrixXd* gradient, double lr) {
-    std::cout << "BasicLayer" << std::endl;
+std::vector<Eigen::MatrixXd> BasicLayer::grad(std::vector<Eigen::MatrixXd> gradient, double lr) {
+    std::cout << "BasicLayerGrad" << std::endl;
+    std::vector<Eigen::MatrixXd> g_x;
+    for (int i = 0; i < inputs.size(); i++) {
 
-    Eigen::MatrixXd g = gradient->unaryExpr(std::ptr_fun(_active_grad_map[active]));
+        Eigen::MatrixXd g = gradient[i].unaryExpr(std::ptr_fun(_active_grad_map[active]));
 
-    // gradient to w
-    Eigen::MatrixXd g_w = g * inputs[0].transpose();
+        // gradient to w
+        Eigen::MatrixXd g_w = g * inputs[i].transpose();
 
-    // gradient to d
-    Eigen::MatrixXd g_b = g;
+        // gradient to d
+        Eigen::MatrixXd g_b = g;
 
-    // gradient to x
-    Eigen::MatrixXd g_x = weight.transpose() * g;
+        // gradient to x
+        g_x.push_back(weight.transpose() * g);
 
-    update(std::vector<Eigen::MatrixXd>({g_w, g_b}), lr);
+        update(std::vector<Eigen::MatrixXd>({g_w, g_b}), lr);
+    }
 
 //    std::cout << bias.transpose() <<std::endl;
 
@@ -45,11 +48,14 @@ Eigen::MatrixXd BasicLayer::grad(Eigen::MatrixXd* gradient, double lr) {
 }
 
 std::vector<Eigen::MatrixXd> BasicLayer::compute(std::vector<Eigen::MatrixXd> target) {
-    Eigen::MatrixXd x = inputs[0];
-    output = weight*x + bias;
+    std::cout << "BasicLayer" << std::endl;
+    std::vector<Eigen::MatrixXd> output(inputs.size());
 
-    output = output.unaryExpr(std::ptr_fun(_active_map[active]));
-    return std::vector<Eigen::MatrixXd>({output});
+    for (int i = 0; i < inputs.size(); i++) {
+        Eigen::MatrixXd x = inputs[i];
+        output[i] = (weight * x + bias).unaryExpr(std::ptr_fun(_active_map[active]));
+    }
+    return output;
 }
 
 void BasicLayer::update(std::vector<Eigen::MatrixXd> gradient, double lr) {
@@ -62,20 +68,32 @@ void BasicLayer::setActive(const std::string &active) {
 }
 
 std::vector<Eigen::MatrixXd> LossLayer::compute(std::vector<Eigen::MatrixXd> target) {
-    Eigen::MatrixXd x = inputs[0];
-    Eigen::MatrixXd y = target[0];
+    std::cout << "LossLayer" << std::endl;
+    std::vector<Eigen::MatrixXd> output;
+    int size = inputs.size();
 
-    inputs.push_back(y);
+    for (int i = 0; i < size; i++) {
+        Eigen::MatrixXd x = inputs[i];
+        Eigen::MatrixXd y = target[i];
 
-    Eigen::MatrixXd output = (x-y);
-    return std::vector<Eigen::MatrixXd>({ output.array().square().matrix() });
+        inputs.push_back(y);
+
+        output.push_back((x - y).array().square().matrix());
+    }
+    return output;
 }
 
-Eigen::MatrixXd LossLayer::grad(Eigen::MatrixXd* gradient, double lr) {
-    std::cout << "LossLayer" << std::endl;
+std::vector<Eigen::MatrixXd> LossLayer::grad(std::vector<Eigen::MatrixXd> gradient, double lr) {
+    std::cout << "LossLayerGrad" << std::endl;
+    int size = inputs.size()/2;
 
-    Eigen::MatrixXd x = inputs[0];
-    Eigen::MatrixXd y = inputs[1];
+    std::vector<Eigen::MatrixXd> output;
 
-    return (x-y);
+    for(int i = 0; i < size; i++) {
+        Eigen::MatrixXd x = inputs[i];
+        Eigen::MatrixXd y = inputs[size+i];
+        output.push_back(x-y);
+    }
+
+    return output;
 }
