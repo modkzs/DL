@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc libDAG.a  CMakeFiles/DAG.dir/schedular.cpp.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib libDAG.a

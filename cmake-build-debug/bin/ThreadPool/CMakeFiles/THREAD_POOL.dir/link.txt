@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc libTHREAD_POOL.a  CMakeFiles/THREAD_POOL.dir/SimpleThreadPool.cpp.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib libTHREAD_POOL.a
