@@ -55,7 +55,9 @@ std::vector<Eigen::MatrixXd> BasicLayer::compute(std::vector<Eigen::MatrixXd> ta
         Eigen::MatrixXd x = inputs[i];
         output[i] = (weight * x + bias).unaryExpr(std::ptr_fun(_active_map[active]));
     }
+    std::cout << "BasicLayer Over" << std::endl;
     return output;
+
 }
 
 void BasicLayer::update(std::vector<Eigen::MatrixXd> gradient, double lr) {

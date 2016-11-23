@@ -76,7 +76,6 @@ std::vector<Eigen::MatrixXd> BasicRNNLayer::grad(std::vector<Eigen::MatrixXd> gr
         }
 
         g2x.push_back(w.transpose() * gradient[0]);
-
     }
 
     update(std::vector<Eigen::MatrixXd>{g2w, g2b, g2u}, lr);

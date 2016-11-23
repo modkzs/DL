@@ -21,6 +21,8 @@ public:
         input_source.reserve(input_source.size() + source.size());
         input_source.insert(input_source.end(), source.begin(), source.end());
     }
+
+    std::mutex mt;
 protected:
     std::vector<Eigen::MatrixXd> inputs;
     std::vector<int> input_source;
