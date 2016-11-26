@@ -1,6 +1,7 @@
 //
 // Created by yixuan he on 23/11/2016.
 //
+#include <iostream>
 #include "SimpleThreadPool.h"
 
 // the constructor just launches some amount of workers
@@ -35,7 +36,7 @@ ThreadPool::ThreadPool() {
 }
 
 // add new work item to the pool
-void ThreadPool::enqueue(std::function<void()> &&f) {
+void ThreadPool::enqueue(std::function<void()> f) {
 //    auto task = std::make_shared<std::packaged_task<void> >(f);
 
 //    std::future<return_type> res = task->get_future();
@@ -54,6 +55,7 @@ void ThreadPool::enqueue(std::function<void()> &&f) {
 
 // the destructor joins all threads
 ThreadPool::~ThreadPool() {
+    std::cout << "ThreadPool" << std::endl;
     {
         std::unique_lock<std::mutex> lock(queue_mutex);
         stop = true;

@@ -42,7 +42,7 @@ std::vector<Eigen::MatrixXd> BasicLayer::grad(std::vector<Eigen::MatrixXd> gradi
         update(std::vector<Eigen::MatrixXd>({g_w, g_b}), lr);
     }
 
-//    std::cout << bias.transpose() <<std::endl;
+    std::cout << "BasicLayerGradOver" << std::endl;
 
     return g_x;
 }
@@ -57,7 +57,6 @@ std::vector<Eigen::MatrixXd> BasicLayer::compute(std::vector<Eigen::MatrixXd> ta
     }
     std::cout << "BasicLayer Over" << std::endl;
     return output;
-
 }
 
 void BasicLayer::update(std::vector<Eigen::MatrixXd> gradient, double lr) {
@@ -82,6 +81,8 @@ std::vector<Eigen::MatrixXd> LossLayer::compute(std::vector<Eigen::MatrixXd> tar
 
         output.push_back((x - y).array().square().matrix());
     }
+
+    std::cout << "LossLayerOver" << std::endl;
     return output;
 }
 
@@ -96,6 +97,8 @@ std::vector<Eigen::MatrixXd> LossLayer::grad(std::vector<Eigen::MatrixXd> gradie
         Eigen::MatrixXd y = inputs[size+i];
         output.push_back(x-y);
     }
+
+    std::cout << "LossLayerGradOver" << std::endl;
 
     return output;
 }

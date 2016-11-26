@@ -43,6 +43,8 @@ std::vector<Eigen::MatrixXd> BasicRNNLayer::compute(std::vector<Eigen::MatrixXd>
         s.push_back(staus);
     }
 
+    std::cout << "BasicRNNLayerOver" << std::endl;
+
     return s;
 }
 
@@ -79,6 +81,10 @@ std::vector<Eigen::MatrixXd> BasicRNNLayer::grad(std::vector<Eigen::MatrixXd> gr
     }
 
     update(std::vector<Eigen::MatrixXd>{g2w, g2b, g2u}, lr);
+
+    std::cout << "BasicRNNLayerGradOver" << std::endl;
+
+    return g2x;
 }
 
 void BasicRNNLayer::update(std::vector<Eigen::MatrixXd> gradient, double lr) {

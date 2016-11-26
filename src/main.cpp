@@ -35,8 +35,10 @@ int main() {
     int loss_id = s.addLayer(std::vector<int>({basic_id}), &loss_layer);
 
 //    s.compute(x, y, loss_id);
-    s.run(x, y, std::vector<int>({loss_id}));
+//    s.run(x, y, std::vector<int>({loss_id}));
 //    s.train(x, y);
+    s.pTrain(x, y);
+    std::cout << "all over" << std::endl;
 
 //    int b_id = s.addLayer(&b);
 //    int l_id = s.addLayer(std::vector<int>({b_id}), &l);

@@ -19,7 +19,7 @@ class ThreadPool {
 public:
     ThreadPool(size_t);
     ThreadPool();
-    void enqueue(std::function<void()> &&f);
+    void enqueue(std::function<void()> f);
     ~ThreadPool();
 
 private:
